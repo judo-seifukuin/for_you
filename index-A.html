@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>急な痛みに、今すぐ対応 | 柔道整復院 judo-seifukuin and 鍼灸院</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --amber: #f59e0b;
+      --amber-light: #fcd34d;
+      --amber-dark: #b45309;
+      --bg: #0c0800;
+      --bg2: #1a1000;
+      --text: #fff8ee;
+      --text-muted: rgba(255,248,238,0.55);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Noto Sans JP', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; background: rgba(12,8,0,0.75); border-bottom: 1px solid rgba(245,158,11,0.12); backdrop-filter: blur(14px); }
+    .nav-logo { font-family: 'Noto Serif JP', serif; font-size: 0.85rem; font-weight: 700; color: var(--cream); letter-spacing: 0.05em; }
+    .nav-logo span { color: var(--amber); }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a { font-size: 0.78rem; color: rgba(255,248,238,0.6); text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--amber); }
+    .nav-cta { background: var(--amber); color: #1a0a00 !important; padding: 8px 20px; border-radius: 4px; font-weight: 700 !important; font-size: 0.78rem !important; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--amber-light) !important; color: #1a0a00 !important; }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 120px 10% 80px; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(180,83,9,0.18) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 10% 80%, rgba(245,158,11,0.08) 0%, transparent 55%), linear-gradient(160deg, #1a0e00 0%, #0c0800 60%, #0a1a05 100%); }
+    .hero-grid-lines { position: absolute; inset: 0; z-index: 0; opacity: 0.035; background-image: repeating-linear-gradient(90deg, rgba(245,158,11,1) 0px, rgba(245,158,11,1) 1px, transparent 1px, transparent 60px), repeating-linear-gradient(0deg, rgba(245,158,11,1) 0px, rgba(245,158,11,1) 1px, transparent 1px, transparent 60px); }
+    .hero-content { position: relative; z-index: 1; max-width: 640px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; color: var(--amber); font-weight: 500; border: 1px solid rgba(245,158,11,0.35); border-radius: 3px; padding: 6px 14px; margin-bottom: 28px; animation: fadeInUp 0.6s ease both; }
+    .hero-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 8px var(--amber); animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    .hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 900; line-height: 1.25; margin-bottom: 24px; animation: fadeInUp 0.6s ease 0.1s both; }
+    .hero-title em { font-style: normal; background: linear-gradient(90deg, var(--amber), var(--amber-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { font-size: 1rem; line-height: 1.9; color: var(--text-muted); margin-bottom: 40px; animation: fadeInUp 0.6s ease 0.2s both; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; animation: fadeInUp 0.6s ease 0.3s both; }
+    .btn-primary { background: var(--amber); color: #1a0a00; padding: 16px 32px; border-radius: 4px; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.06em; text-decoration: none; border: none; cursor: pointer; font-family: inherit; transition: all 0.2s; box-shadow: 0 4px 24px rgba(245,158,11,0.35); }
+    .btn-primary:hover { background: var(--amber-light); box-shadow: 0 6px 32px rgba(245,158,11,0.5); transform: translateY(-2px); }
+    .btn-secondary { background: transparent; color: var(--text); padding: 16px 28px; border-radius: 4px; font-weight: 500; font-size: 0.9rem; letter-spacing: 0.06em; text-decoration: none; border: 1px solid rgba(255,248,238,0.2); cursor: pointer; font-family: inherit; transition: all 0.2s; }
+    .btn-secondary:hover { border-color: rgba(245,158,11,0.5); color: var(--amber); }
+    .hero-urgency { margin-top: 48px; display: flex; gap: 32px; flex-wrap: wrap; animation: fadeInUp 0.6s ease 0.4s both; }
+    .urgency-item { display: flex; align-items: center; gap: 10px; }
+    .urgency-icon { width: 36px; height: 36px; border-radius: 50%; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .urgency-text { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+    .urgency-text strong { display: block; color: var(--text); font-size: 0.85rem; }
+    @keyframes fadeInUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:translateY(0);} }
+    section { padding: 100px 10%; }
+    .section-tag { font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.25em; color: var(--amber); margin-bottom: 16px; display: block; }
+    .section-title { font-family: 'Noto Serif JP', serif; font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 700; line-height: 1.4; margin-bottom: 16px; }
+    .section-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.9; max-width: 520px; }
+    .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(245,158,11,0.2), transparent); }
+    .features { background: var(--bg2); }
+    .features-header { margin-bottom: 60px; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(245,158,11,0.12); border-radius: 8px; padding: 32px 28px; transition: all 0.3s; position: relative; overflow: hidden; }
+    .feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--amber), transparent); opacity: 0; transition: opacity 0.3s; }
+    .feature-card:hover { border-color: rgba(245,158,11,0.35); transform: translateY(-4px); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-num { font-family: 'DM Mono', monospace; font-size: 2.5rem; font-weight: 500; color: rgba(245,158,11,0.15); line-height: 1; margin-bottom: 16px; }
+    .feature-title { font-size: 1rem; font-weight: 700; margin-bottom: 10px; color: var(--text); }
+    .feature-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.8; }
+    .feature-icon { font-size: 1.8rem; margin-bottom: 14px; }
+    .menu { background: var(--bg); }
+    .menu-header { margin-bottom: 60px; }
+    .menu-grid { display: flex; flex-direction: column; gap: 1px; }
+    .menu-item { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 24px; padding: 28px 0; border-bottom: 1px solid rgba(245,158,11,0.1); transition: all 0.2s; }
+    .menu-item:first-child { border-top: 1px solid rgba(245,158,11,0.1); }
+    .menu-item:hover { padding-left: 12px; }
+    .menu-badge { display: inline-block; font-size: 0.62rem; letter-spacing: 0.15em; color: var(--amber); border: 1px solid rgba(245,158,11,0.3); border-radius: 2px; padding: 2px 8px; margin-bottom: 8px; font-family: 'DM Mono', monospace; }
+    .menu-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+    .menu-desc { font-size: 0.78rem; color: var(--text-muted); line-height: 1.7; }
+    .menu-price { text-align: right; white-space: nowrap; }
+    .menu-price .price { font-family: 'DM Mono', monospace; font-size: 1.4rem; color: var(--amber); font-weight: 500; }
+    .menu-price .price-label { font-size: 0.68rem; color: var(--text-muted); display: block; margin-top: 2px; }
+    .menu-highlight { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: 8px; padding: 20px 24px; margin-top: 28px; display: flex; align-items: center; gap: 16px; }
+    .menu-highlight-icon { font-size: 1.5rem; }
+    .menu-highlight p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.7; }
+    .menu-highlight strong { color: var(--amber); }
+    .contact { background: var(--bg2); }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .contact-header { margin-bottom: 36px; }
+    .contact-details { display: flex; flex-direction: column; gap: 20px; margin-bottom: 36px; }
+    .contact-row { display: flex; gap: 16px; align-items: flex-start; }
+    .contact-icon { width: 40px; height: 40px; border-radius: 6px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .contact-row-text { font-size: 0.85rem; line-height: 1.7; }
+    .contact-row-text strong { display: block; font-size: 0.72rem; letter-spacing: 0.1em; color: var(--amber); margin-bottom: 2px; font-family: 'DM Mono', monospace; }
+    .map-placeholder { width: 100%; height: 220px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid rgba(245,158,11,0.1); display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--text-muted); margin-top: 8px; }
+    .form-title { font-family: 'Noto Serif JP', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    .form-sub { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 28px; line-height: 1.7; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.72rem; letter-spacing: 0.1em; color: var(--amber); margin-bottom: 6px; font-family: 'DM Mono', monospace; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,248,238,0.12); border-radius: 4px; padding: 12px 14px; color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-size: 0.88rem; transition: border-color 0.2s; outline: none; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: rgba(245,158,11,0.6); }
+    .form-group select { appearance: none; }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-submit { width: 100%; padding: 16px; background: var(--amber); color: #1a0a00; border: none; border-radius: 4px; font-family: 'Noto Sans JP', sans-serif; font-size: 0.92rem; font-weight: 700; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s; margin-top: 8px; box-shadow: 0 4px 24px rgba(245,158,11,0.3); }
+    .form-submit:hover { background: var(--amber-light); box-shadow: 0 6px 32px rgba(245,158,11,0.45); }
+    .form-note { font-size: 0.68rem; color: var(--text-muted); margin-top: 10px; text-align: center; line-height: 1.6; }
+    footer { padding: 40px 10%; border-top: 1px solid rgba(245,158,11,0.1); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { font-family: 'Noto Serif JP', serif; font-size: 0.82rem; color: var(--cream); font-weight: 700; }
+    .footer-logo span { color: var(--amber); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-size: 0.72rem; color: var(--text-muted); text-decoration: none; }
+    .footer-copy { font-size: 0.68rem; color: rgba(255,248,238,0.25); width: 100%; }
+    @media (max-width: 768px) { nav { padding: 14px 20px; } .nav-links { display: none; } .hero { padding: 100px 6% 60px; } section { padding: 70px 6%; } .features-grid { grid-template-columns: 1fr; } .contact-inner { grid-template-columns: 1fr; gap: 40px; } .form-row { grid-template-columns: 1fr; } footer { flex-direction: column; align-items: flex-start; } }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">柔道整復院 <span>judo-seifukuin</span> and 鍼灸院</div>
+  <div class="nav-links">
+    <a href="#features">当院の強み</a>
+    <a href="#menu">施術メニュー</a>
+    <a href="#contact">アクセス・予約</a>
+    <a href="#contact" class="nav-cta">今すぐ予約</a>
+  </div>
+</nav>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-content">
+    <div class="hero-badge">⚠️ &nbsp;急性・緊急ケア専門対応</div>
+    <h1 class="hero-title">急な痛みに、<br><em>その日のうちに</em><br>対応します。</h1>
+    <p class="hero-sub">捻挫・打撲・ぎっくり腰・スポーツ怪我——<br>初期対応が早いほど、回復も早まります。<br>まずはお気軽にご連絡ください。当日予約も受け付けています。</p>
+    <div class="hero-actions">
+      <a href="tel:03-1234-5678" class="btn-tel">📞 今すぐ電話で相談する</a>
+      <a href="#contact" class="btn-primary">ネットで予約する</a>
+      <a href="#menu" class="btn-secondary">施術内容を見る</a>
+    </div>
+    <div class="hero-urgency">
+      <div class="urgency-item"><div class="urgency-icon">📞</div><div class="urgency-text"><strong>当日予約OK</strong>急な症状にも対応します</div></div>
+      <div class="urgency-item"><div class="urgency-icon">⚡</div><div class="urgency-text"><strong>初回60分</strong>丁寧なカウンセリング付き</div></div>
+      <div class="urgency-item"><div class="urgency-icon">🏥</div><div class="urgency-text"><strong>健康保険対応</strong>骨折・捻挫・打撲など</div></div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+<section class="features" id="features">
+  <div class="features-header">
+    <span class="section-tag">WHY CHOOSE US</span>
+    <h2 class="section-title">急性の痛みに<br>選ばれる3つの理由</h2>
+    <p class="section-desc">怪我や急な痛みは、初期対応の質が回復速度を大きく左右します。当院が急性期ケアにこだわる理由をご説明します。</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-num">01</div><div class="feature-icon">🎯</div><div class="feature-title">原因を正確に特定する検査力</div><div class="feature-desc">痛みの場所だけでなく、損傷の程度・炎症の状態・周辺組織への影響を詳しく検査。適切な施術プランを初回から提案します。</div></div>
+    <div class="feature-card"><div class="feature-num">02</div><div class="feature-icon">🤝</div><div class="feature-title">柔道整復術と鍼灸の両輪対応</div><div class="feature-desc">固定・テーピング・手技から鍼灸まで、急性症状に最も効果的な施術を組み合わせて提供。1院で完結するケアを実現します。</div></div>
+    <div class="feature-card"><div class="feature-num">03</div><div class="feature-icon">📋</div><div class="feature-title">回復プランの明確な提示</div><div class="feature-desc">「いつ頃よくなるか」「どんな施術を何回受けるか」を初回に説明。通院回数の目安と経過の見通しを丁寧にお伝えします。</div></div>
+  </div>
+</section>
+<div class="divider"></div>
+<section class="menu" id="menu">
+  <div class="menu-header">
+    <span class="section-tag">TREATMENT MENU</span>
+    <h2 class="section-title">急性症状向け<br>施術メニューと料金</h2>
+    <p class="section-desc">急な痛みや怪我の程度に合わせて、最適な施術を組み合わせてご提案します。</p>
+  </div>
+  <div class="menu-grid">
+    <div class="menu-item"><div class="menu-item-left"><span class="menu-badge">保険対応</span><div class="menu-name">柔道整復術（急性外傷）</div><div class="menu-desc">捻挫・打撲・骨折・脱臼など外傷性の急性症状。健康保険が適用されます。</div></div><div class="menu-price"><div class="price">¥500〜</div><span class="price-label">保険適用後の自己負担目安</span></div></div>
+    <div class="menu-item"><div class="menu-item-left"><span class="menu-badge">自費</span><div class="menu-name">急性期集中ケア（初回）</div><div class="menu-desc">カウンセリング＋検査＋施術＋テーピング指導。痛みの原因を特定し、その日から楽になる施術を行います。</div></div><div class="menu-price"><div class="price">¥8,800</div><span class="price-label">初回限定価格（60分）</span></div></div>
+    <div class="menu-item"><div class="menu-item-left"><span class="menu-badge">自費</span><div class="menu-name">鍼灸＋手技（急性炎症対応）</div><div class="menu-desc">炎症を抑えながら周辺組織をほぐし、回復を早める施術。急性期でも安全に行えるアプローチです。</div></div><div class="menu-price"><div class="price">¥6,600</div><span class="price-label">40分</span></div></div>
+    <div class="menu-item"><div class="menu-item-left"><span class="menu-badge">自費</span><div class="menu-name">集中通院プログラム（全5回）</div><div class="menu-desc">急性期から回復期にかけて、週2〜3回の集中施術で早期回復を目指すプランです。</div></div><div class="menu-price"><div class="price">¥29,800</div><span class="price-label">5回セット（約2週間）</span></div></div>
+  </div>
+  <div class="menu-highlight"><div class="menu-highlight-icon">💬</div><p>料金や保険適用については、<strong>初回カウンセリング時に詳しくご説明</strong>します。まずはお気軽にご相談ください。</p></div>
+</section>
+<div class="divider"></div>
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <div class="contact-header"><span class="section-tag">ACCESS</span><h2 class="section-title" style="font-size:1.6rem;">院へのアクセス</h2></div>
+      <div class="contact-details">
+        <div class="contact-row"><div class="contact-icon">📍</div><div class="contact-row-text"><strong>住所</strong>〒000-0000 ○○県○○市○○町1-2-3<br>○○ビル 2F</div></div>
+        <div class="contact-row"><div class="contact-icon">🚉</div><div class="contact-row-text"><strong>アクセス</strong>○○線「○○駅」から徒歩5分</div></div>
+        <div class="contact-row"><div class="contact-icon">🕐</div><div class="contact-row-text"><strong>診療時間</strong>平日 9:00〜20:00 ／ 土日祝 9:00〜18:00<br><span style="color:var(--amber);font-size:0.75rem;">※当日予約・急患対応可（要電話確認）</span></div></div>
+        <div class="contact-row"><div class="contact-icon">📞</div><div class="contact-row-text"><strong>電話番号</strong><a href="tel:03-1234-5678" style="color: inherit; text-decoration: none;">03-1234-5678</a></div></div>
+      </div>
+      <div class="map-placeholder">🗺️ &nbsp;Googleマップをここに埋め込み</div>
+    </div>
+    <div class="contact-form">
+      <h3 class="form-title">無料相談・予約フォーム</h3>
+      <p class="form-sub">急な痛みは早めのご相談を。フォーム送信後、スタッフより折り返しご連絡します（当日対応可）。</p>
+      <form action="#" method="post">
+        <div class="form-row">
+          <div class="form-group"><label for="name">お名前</label><input type="text" id="name" name="name" placeholder="山田 太郎" required/></div>
+          <div class="form-group"><label for="tel">電話番号</label><input type="tel" id="tel" name="tel" placeholder="000-0000-0000" required/></div>
+        </div>
+      <div class="form-group"><label for="symptom">お悩みの症状</label><select id="symptom" name="symptom"><option value="">選択してください</option><option>捻挫・打撲</option><option>ぎっくり腰</option><option>肉離れ</option><option>骨折（疑い含む）</option><option>スポーツ怪我</option><option>その他の急性痛</option></select></div>
+      <div class="form-group"><label for="date">希望日時</label><input type="text" id="date" name="date" placeholder="例：明日の午前中、今週中など"/></div>
+      <div class="form-group"><label for="message">症状・ご要望（任意）</label><textarea id="message" name="message" placeholder="痛みの場所・いつから・どんな状況で起きたかなど、できる範囲で教えてください"></textarea></div>
+      <button class="form-submit" type="submit">相談・予約を申し込む →</button>
+      <p class="form-note">※ご入力いただいた情報は予約確認のみに使用します。<br>急ぎの場合はお電話（<a href="tel:03-1234-5678" style="color: inherit; text-decoration: none;">03-1234-5678</a>）にてご連絡ください。</p>
+      </form>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo">柔道整復院 <span>judo-seifukuin</span> and 鍼灸院</div>
+  <div class="footer-links">
+    <a href="#features">当院の強み</a>
+    <a href="#menu">施術メニュー</a>
+    <a href="#contact">アクセス</a>
+    <a href="care-finder.html">症状診断へ戻る</a>
+  </div>
+  <div class="footer-copy">© 2025 柔道整復院 judo-seifukuin and 鍼灸院. All rights reserved.</div>
+</footer>
+</body>
+</html>

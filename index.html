@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>あなたに、今必要なことを。| judo-seifukuin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;700;800&family=Noto+Sans+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --paper:    #F4F1EA;
+      --paper-2:  #EDE8DD;
+      --ink:      #0F1A12;
+      --ink-soft: #2a3429;
+      --green:    #234A38;
+      --sage:     #A3B8AC;
+      --rule:     rgba(15,26,18,0.18);
+      --rule-soft: rgba(15,26,18,0.08);
+      --muted:    rgba(15,26,18,0.55);
+    }
+
+```
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior:smooth; }
+body {
+  font-family:'Noto Sans JP', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height:100vh;
+  font-feature-settings:"palt";
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── editorial top bar ── */
+.top-bar {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:18px 36px;
+  display:flex; align-items:center; justify-content:space-between;
+  background: var(--paper);
+  border-bottom:1px solid var(--rule);
+}
+.top-logo {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic; font-size:1.15rem; font-weight:500;
+  color:var(--green); letter-spacing:.02em;
+}
+.top-meta {
+  display:flex; align-items:center; gap:24px;
+  font-size:.66rem; letter-spacing:.18em;
+  color:var(--muted); text-transform:uppercase;
+}
+.top-skip { color:var(--ink); text-decoration:none; border-bottom:1px solid var(--ink); padding-bottom:1px; transition:opacity .2s; }
+.top-skip:hover { opacity:.55; }
+
+/* ── stage ── */
+.stage {
+  min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  padding:120px 32px 80px;
+}
+
+.screen, .result-screen { display:none; width:100%; }
+.screen { max-width:900px; }
+.result-screen { max-width:100%; }
+.screen.active, .result-screen.active {
+  display:block;
+  animation:fadeUp .6s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ════════ QUESTION SCREEN ════════ */
+
+.q-meta {
+  display:flex; justify-content:space-between; align-items:flex-end;
+  padding-bottom:18px; margin-bottom:64px;
+  border-bottom:1px solid var(--rule);
+}
+.q-meta-left {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:.85rem; color:var(--muted); letter-spacing:.04em;
+}
+.q-meta-right {
+  font-family:'Cormorant Garamond', serif;
+  font-size:1.25rem; color:var(--ink);
+  letter-spacing:.04em;
+}
+.q-meta-right .total { color:var(--muted); }
+
+.q-headline {
+  font-family:'Shippori Mincho B1', serif;
+  font-size:clamp(2rem, 6vw, 3.5rem);
+  font-weight:800;
+  line-height:1.32;
+  letter-spacing:.01em;
+  margin-bottom:28px;
+  color:var(--ink);
+}
+.q-headline .accent { color:var(--green); }
+
+.q-lead {
+  font-size:.92rem;
+  color:var(--ink-soft);
+  line-height:1.95;
+  max-width:540px;
+  margin-bottom:80px;
+  font-weight:400;
+}
+
+/* ── 4-choice editorial grid ── */
+.choice-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  column-gap:56px;
+  row-gap:0;
+  border-top:1px solid var(--rule);
+}
+.choice-btn {
+  display:block;
+  width:100%;
+  text-align:left;
+  padding:32px 0 30px;
+  border:none;
+  border-bottom:1px solid var(--rule);
+  background:transparent;
+  cursor:pointer;
+  font-family:inherit;
+  transition:padding-left .35s cubic-bezier(.22,1,.36,1);
+  position:relative;
+}
+.choice-btn::after {
+  content:'→';
+  position:absolute; right:0; top:32px;
+  font-size:1.1rem; color:var(--green);
+  opacity:0; transition:all .35s cubic-bezier(.22,1,.36,1);
+  transform:translateX(-8px);
+}
+.choice-btn:hover { padding-left:14px; }
+.choice-btn:hover::after { opacity:1; transform:translateX(0); }
+
+.choice-num {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:.95rem;
+  color:var(--green);
+  letter-spacing:.04em;
+  margin-bottom:10px;
+  display:block;
+}
+.choice-label {
+  font-family:'Shippori Mincho B1', serif;
+  font-size:1.18rem; font-weight:700;
+  color:var(--ink); line-height:1.55;
+  margin-bottom:8px;
+  display:block;
+}
+.choice-desc {
+  font-size:.74rem;
+  color:var(--muted);
+  line-height:1.85;
+  letter-spacing:.02em;
+}
+
+/* ── YN ── */
+.yn-wrap {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:0; border-top:1px solid var(--rule);
+}
+.yn-btn {
+  padding:48px 32px;
+  border:none;
+  border-bottom:1px solid var(--rule);
+  background:transparent;
+  cursor:pointer;
+  font-family:inherit;
+  text-align:left;
+  transition:background .3s, padding-left .35s cubic-bezier(.22,1,.36,1);
+  position:relative;
+}
+.yn-btn:first-child { border-right:1px solid var(--rule); }
+.yn-btn:hover { background:var(--paper-2); padding-left:46px; }
+.yn-btn:first-child:hover { padding-left:46px; }
+.yn-btn::after {
+  content:'→';
+  position:absolute; right:32px; top:50%;
+  transform:translateY(-50%) translateX(-8px);
+  font-size:1.1rem; color:var(--green);
+  opacity:0; transition:all .35s;
+}
+.yn-btn:hover::after { opacity:1; transform:translateY(-50%) translateX(0); }
+
+.yn-num {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:.85rem; color:var(--green);
+  letter-spacing:.04em; margin-bottom:8px; display:block;
+}
+.yn-label {
+  font-family:'Shippori Mincho B1', serif;
+  font-size:1.4rem; font-weight:700;
+  color:var(--ink); margin-bottom:4px;
+  display:block;
+}
+.yn-sub {
+  font-size:.75rem;
+  color:var(--muted);
+  letter-spacing:.02em;
+}
+
+.back-btn {
+  margin-top:40px; font-size:.75rem;
+  color:var(--muted);
+  cursor:pointer; background:none; border:none;
+  font-family:inherit;
+  letter-spacing:.05em;
+  transition:color .2s;
+}
+.back-btn:hover { color:var(--green); }
+
+/* ════════ RESULT PAGE — magazine spread ════════ */
+
+.result-page {
+  width:100%;
+  background:var(--paper);
+  min-height:100vh;
+  padding:120px 0 100px;
+}
+
+.rp-container {
+  max-width:1180px;
+  margin:0 auto;
+  padding:0 48px;
+}
+
+/* ── result top meta ── */
+.rp-top-meta {
+  display:flex; justify-content:space-between; align-items:flex-end;
+  padding-bottom:24px;
+  margin-bottom:72px;
+  border-bottom:1px solid var(--rule);
+}
+.rp-issue {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:.95rem;
+  color:var(--muted);
+}
+.rp-issue strong { font-style:normal; color:var(--green); font-weight:500; letter-spacing:.04em; }
+.rp-section {
+  font-family:'Cormorant Garamond', serif;
+  font-size:1.4rem;
+  color:var(--ink);
+}
+
+/* ── headline section ── */
+.rp-headline-block {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  margin-bottom:120px;
+  align-items:end;
+}
+.rp-eyebrow {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:1rem;
+  color:var(--green);
+  margin-bottom:32px;
+  letter-spacing:.02em;
+}
+.rp-eyebrow::before {
+  content:''; display:inline-block;
+  width:32px; height:1px;
+  background:var(--green);
+  vertical-align:middle;
+  margin-right:14px;
+}
+.rp-headline {
+  font-family:'Shippori Mincho B1', serif;
+  font-size:clamp(2.4rem, 6.5vw, 4.5rem);
+  font-weight:800;
+  line-height:1.22;
+  color:var(--ink);
+  letter-spacing:.005em;
+}
+.rp-headline .em { color:var(--green); }
+.rp-lead {
+  font-size:.9rem;
+  line-height:2.05;
+  color:var(--ink-soft);
+  max-width:440px;
+  padding-bottom:8px;
+}
+.rp-lead::first-letter {
+  font-family:'Shippori Mincho B1', serif;
+  font-size:1.4em;
+  font-weight:700;
+  color:var(--green);
+}
+
+/* ── pullquote ── */
+.rp-quote {
+  margin:0 0 120px;
+  max-width:780px;
+  padding:48px 0;
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  text-align:center;
+}
+.rp-quote-mark {
+  font-family:'Cormorant Garamond', serif;
+  font-size:3rem; color:var(--green);
+  line-height:1; margin-bottom:16px;
+}
+.rp-quote p {
+  font-family:'Shippori Mincho B1', serif;
+  font-size:clamp(1.3rem, 2.8vw, 1.8rem);
+  font-weight:700;
+  line-height:1.7;
+  color:var(--ink);
+  margin-bottom:18px;
+  letter-spacing:.01em;
+}
+.rp-quote cite {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:.85rem;
+  color:var(--muted);
+  letter-spacing:.04em;
+}
+
+/* ── points ── */
+.rp-points-section {
+  margin-bottom:96px;
+}
+.rp-points-label {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:1.1rem;
+  color:var(--green);
+  margin-bottom:24px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--rule);
+  letter-spacing:.02em;
+}
+.rp-points {
+  display:grid;
+  grid-template-columns:1fr;
+}
+.rp-point {
+  display:grid;
+  grid-template-columns:80px 1fr 280px;
+  gap:32px;
+  padding:36px 0;
+  border-bottom:1px solid var(--rule-soft);
+  align-items:start;
+}
+.rp-point:last-child { border-bottom:none; }
+.rp-num {
+  font-family:'Cormorant Garamond', serif;
+  font-size:2.6rem; line-height:1;
+  color:var(--green);
+  font-weight:400;
+}
+.rp-point-title {
+  font-family:'Shippori Mincho B1', serif;
+  font-size:1.18rem; font-weight:700;
+  line-height:1.65;
+  color:var(--ink);
+  margin-bottom:0;
+}
+.rp-point-desc {
+  font-size:.78rem;
+  color:var(--ink-soft);
+  line-height:1.95;
+  letter-spacing:.02em;
+}
+
+/* ── CTA ── */
+.rp-cta-section {
+  max-width:580px;
+}
+.rp-cta-label {
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic;
+  font-size:1rem;
+  color:var(--green);
+  margin-bottom:18px;
+}
+.rp-cta-headline {
+  font-family:'Shippori Mincho B1', serif;
+  font-size:1.5rem; font-weight:700;
+  line-height:1.6;
+  color:var(--ink);
+  margin-bottom:32px;
+}
+.rp-cta {
+  display:inline-flex; align-items:center; gap:14px;
+  padding:20px 38px;
+  background:var(--green);
+  color:var(--paper);
+  font-size:.85rem; font-weight:700;
+  letter-spacing:.12em;
+  text-decoration:none; cursor:pointer;
+  font-family:'Noto Sans JP', sans-serif;
+  border:none;
+  transition:all .3s;
+}
+.rp-cta:hover { background:var(--ink); transform:translateY(-2px); }
+.rp-cta::after { content:'→'; font-size:1rem; transition:transform .3s; }
+.rp-cta:hover::after { transform:translateX(4px); }
+
+.rp-retry {
+  display:inline-block; margin-left:32px;
+  font-size:.74rem; color:var(--muted);
+  cursor:pointer; background:none; border:none;
+  font-family:inherit; letter-spacing:.06em;
+  transition:color .2s;
+}
+.rp-retry:hover { color:var(--green); }
+
+/* ── result variants — only the eyebrow & accent change ── */
+.theme-A .rp-eyebrow,
+.theme-A .rp-eyebrow::before,
+.theme-A .rp-headline .em,
+.theme-A .rp-num,
+.theme-A .rp-quote-mark,
+.theme-A .rp-points-label,
+.theme-A .rp-cta-label,
+.theme-A .rp-issue strong { color:#1B5E3F; }
+.theme-A .rp-eyebrow::before { background:#1B5E3F; }
+.theme-A .rp-cta { background:#1B5E3F; }
+.theme-A .rp-lead::first-letter { color:#1B5E3F; }
+
+/* B keeps default forest */
+
+.theme-C .rp-eyebrow,
+.theme-C .rp-eyebrow::before,
+.theme-C .rp-headline .em,
+.theme-C .rp-num,
+.theme-C .rp-quote-mark,
+.theme-C .rp-points-label,
+.theme-C .rp-cta-label,
+.theme-C .rp-issue strong { color:#1e3a8a; }
+.theme-C .rp-eyebrow::before { background:#1e3a8a; }
+.theme-C .rp-cta { background:#1e3a8a; }
+.theme-C .rp-lead::first-letter { color:#1e3a8a; }
+
+.theme-D .rp-eyebrow,
+.theme-D .rp-eyebrow::before,
+.theme-D .rp-headline .em,
+.theme-D .rp-num,
+.theme-D .rp-quote-mark,
+.theme-D .rp-points-label,
+.theme-D .rp-cta-label,
+.theme-D .rp-issue strong { color:#5b21b6; }
+.theme-D .rp-eyebrow::before { background:#5b21b6; }
+.theme-D .rp-cta { background:#5b21b6; }
+.theme-D .rp-lead::first-letter { color:#5b21b6; }
+
+/* ── responsive ── */
+@media (max-width:880px) {
+  .rp-headline-block { grid-template-columns:1fr; gap:32px; }
+  .rp-point { grid-template-columns:48px 1fr; gap:20px; }
+  .rp-point-desc { grid-column:2; }
+  .rp-num { font-size:2rem; }
+}
+@media (max-width:640px) {
+  .top-bar { padding:14px 20px; }
+  .top-meta { gap:14px; font-size:.6rem; }
+  .stage { padding:110px 22px 70px; }
+  .choice-grid { grid-template-columns:1fr; column-gap:0; }
+  .yn-wrap { grid-template-columns:1fr; }
+  .yn-btn:first-child { border-right:none; }
+  .rp-container { padding:0 22px; }
+  .rp-quote p { font-size:1.15rem; }
+  .rp-cta-section .rp-retry { display:block; margin-left:0; margin-top:16px; }
+}
+```
+
+  </style>
+</head>
+<body>
+
+<!-- ────── TOP BAR ────── -->
+
+<div class="top-bar">
+  <div class="top-logo">judo-seifukuin</div>
+  <div class="top-meta">
+    <span>est. 2016</span>
+    <a href="index.html" class="top-skip">基本情報</a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     QUIZ STAGE
+════════════════════════════════════════ -->
+
+<div class="stage">
+
+  <!-- ── Q1 ── -->
+
+  <div class="screen active" id="screen-q1">
+    <div class="q-meta">
+      <div class="q-meta-left">— Diagnosis</div>
+      <div class="q-meta-right">01<span class="total"> / 02</span></div>
+    </div>
+    <h2 class="q-headline">今のあなたに、<br>いちばん<span class="accent">近いの</span>は？</h2>
+    <p class="q-lead">正直に選んでください。それだけでいい。<br>たった2問で、あなたに必要なケアを見つけます。</p>
+
+```
+<div class="choice-grid">
+  <button class="choice-btn" onclick="selectQ1('acute')">
+    <span class="choice-num">i.</span>
+    <span class="choice-label">急に痛めた。<br>早く戻りたい。</span>
+    <span class="choice-desc">怪我・捻挫・ぎっくり腰など、最近急に起きた痛み</span>
+  </button>
+  <button class="choice-btn" onclick="selectQ1('chronic')">
+    <span class="choice-num">ii.</span>
+    <span class="choice-label">ずっとつらい。<br>根本から変えたい。</span>
+    <span class="choice-desc">肩こり・腰痛・頭痛など、長く続く慢性的な不調</span>
+  </button>
+  <button class="choice-btn" onclick="selectQ1('sport')">
+    <span class="choice-num">iii.</span>
+    <span class="choice-label">スポーツで傷めた。<br>また動きたい。</span>
+    <span class="choice-desc">競技・トレーニング中の怪我。復帰を目指している</span>
+  </button>
+  <button class="choice-btn" onclick="selectQ1('maintenance')">
+    <span class="choice-num">iv.</span>
+    <span class="choice-label">痛みはない。<br>もっとよくなれる気がする。</span>
+    <span class="choice-desc">不調はないが、コンディションをさらに上げたい</span>
+  </button>
+</div>
+```
+
+  </div>
+
+  <!-- ── Q2 ── -->
+
+  <div class="screen" id="screen-q2">
+    <div class="q-meta">
+      <div class="q-meta-left">— Duration</div>
+      <div class="q-meta-right">02<span class="total"> / 02</span></div>
+    </div>
+    <h2 class="q-headline">それは、<br><span class="accent">いつ頃から</span>ですか？</h2>
+    <p class="q-lead">急性か慢性か。アプローチが、変わります。</p>
+
+```
+<div class="yn-wrap">
+  <button class="yn-btn" onclick="selectQ2('recent')">
+    <span class="yn-num">i.</span>
+    <span class="yn-label">最近のこと</span>
+    <span class="yn-sub">2週間以内に起きた</span>
+  </button>
+  <button class="yn-btn" onclick="selectQ2('long')">
+    <span class="yn-num">ii.</span>
+    <span class="yn-label">もうしばらく</span>
+    <span class="yn-sub">2週間以上続いている</span>
+  </button>
+</div>
+<button class="back-btn" onclick="showScreen('screen-q1')">← 前の質問に戻る</button>
+```
+
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════
+     RESULT A — 急性
+════════════════════════════════════════ -->
+
+<div class="result-screen" id="result-A">
+  <div class="result-page theme-A">
+    <div class="rp-container">
+
+```
+  <div class="rp-top-meta">
+    <div class="rp-issue"><strong>Issue</strong> &nbsp;A &nbsp;— &nbsp;Acute Care</div>
+    <div class="rp-section">judo-seifukuin</div>
+  </div>
+
+  <div class="rp-headline-block">
+    <div>
+      <div class="rp-eyebrow">あなたへの処方箋</div>
+      <h1 class="rp-headline">今が、<br>いちばん<br><span class="em">大事</span>な時間です。</h1>
+    </div>
+    <p class="rp-lead">急な痛みは、身体からの本気のサイン。早く動くほど、戻りも早い。放置が、一番の敵です。最短距離で、必要なことだけを、徹底的にやります。</p>
+  </div>
+
+  <blockquote class="rp-quote">
+    <div class="rp-quote-mark">"</div>
+    <p>「どうだ！」って決まった時が、めっちゃ楽しい。</p>
+    <cite>— judo-seifukuin / MISSION</cite>
+  </blockquote>
+
+  <div class="rp-points-section">
+    <div class="rp-points-label">— Approach</div>
+    <div class="rp-points">
+      <div class="rp-point">
+        <div class="rp-num">01</div>
+        <div class="rp-point-title">初回で「本当の原因」を、特定する。</div>
+        <div class="rp-point-desc">痛みの場所じゃなく、なぜそこが痛むのかを見ます。症状を見るんじゃない、あなたを見る。</div>
+      </div>
+      <div class="rp-point">
+        <div class="rp-num">02</div>
+        <div class="rp-point-title">最短回復を、設計する。</div>
+        <div class="rp-point-desc">プロとして結果にこだわる。プロセスは自分たちの楽しみ。あなたには、最高の結果を。</div>
+      </div>
+      <div class="rp-point">
+        <div class="rp-num">03</div>
+        <div class="rp-point-title">痛みが消えてから、本当のスタート。</div>
+        <div class="rp-point-desc">再発しない身体づくりまで責任を持ちます。治るためのことしか、しない。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rp-cta-section">
+    <div class="rp-cta-label">— Next step</div>
+    <div class="rp-cta-headline">準備ができたら、<br>LINEから話しかけてください。</div>
+    <button class="rp-cta" onclick="location.href='index-A.html#contact'">LINEで相談する</button>
+    <button class="rp-retry" onclick="restart()">↺ 最初からやり直す</button>
+  </div>
+
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     RESULT B — 慢性
+════════════════════════════════════════ -->
+
+<div class="result-screen" id="result-B">
+  <div class="result-page theme-B">
+    <div class="rp-container">
+
+```
+  <div class="rp-top-meta">
+    <div class="rp-issue"><strong>Issue</strong> &nbsp;B &nbsp;— &nbsp;Chronic Care</div>
+    <div class="rp-section">judo-seifukuin</div>
+  </div>
+
+  <div class="rp-headline-block">
+    <div>
+      <div class="rp-eyebrow">あなたへの処方箋</div>
+      <h1 class="rp-headline">症状を、<br>見るんじゃない。<br><span class="em">あなた</span>を見る。</h1>
+    </div>
+    <p class="rp-lead">長く続く不調は、痛みの場所が原因じゃないことがほとんど。だから「そこ」だけ触っても、変わらなかった。私たちが見るのは、あなたの生き方そのものです。</p>
+  </div>
+
+  <blockquote class="rp-quote">
+    <div class="rp-quote-mark">"</div>
+    <p>変えるのは身体じゃない。その人の生き方。<br>そして、価値観が変わる。</p>
+    <cite>— judo-seifukuin / CONCEPT</cite>
+  </blockquote>
+
+  <div class="rp-points-section">
+    <div class="rp-points-label">— Approach</div>
+    <div class="rp-points">
+      <div class="rp-point">
+        <div class="rp-num">01</div>
+        <div class="rp-point-title">姿勢・習慣・身体の癖を、丸ごと診る。</div>
+        <div class="rp-point-desc">痛みの奥にある真の原因を探ります。症状の場所は、ただの「出口」に過ぎません。</div>
+      </div>
+      <div class="rp-point">
+        <div class="rp-num">02</div>
+        <div class="rp-point-title">フルオーダーメイドで、組み立てる。</div>
+        <div class="rp-point-desc">メニューのない接骨院。決まったコースじゃなく、その日のあなたに合わせて、整復・鍼灸・コンディショニングを組み合わせます。</div>
+      </div>
+      <div class="rp-point">
+        <div class="rp-num">03</div>
+        <div class="rp-point-title">不調を忘れる日常を、取り戻す。</div>
+        <div class="rp-point-desc">その場しのぎで終わらせない。痛みの奥にある真の原因を解決し、心が踊る余裕を取り戻します。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rp-cta-section">
+    <div class="rp-cta-label">— Next step</div>
+    <div class="rp-cta-headline">準備ができたら、<br>LINEから話しかけてください。</div>
+    <button class="rp-cta" onclick="location.href='index-B.html#contact'">LINEで相談する</button>
+    <button class="rp-retry" onclick="restart()">↺ 最初からやり直す</button>
+  </div>
+
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     RESULT C — スポーツ
+════════════════════════════════════════ -->
+
+<div class="result-screen" id="result-C">
+  <div class="result-page theme-C">
+    <div class="rp-container">
+
+```
+  <div class="rp-top-meta">
+    <div class="rp-issue"><strong>Issue</strong> &nbsp;C &nbsp;— &nbsp;Sports Recovery</div>
+    <div class="rp-section">judo-seifukuin</div>
+  </div>
+
+  <div class="rp-headline-block">
+    <div>
+      <div class="rp-eyebrow">あなたへの処方箋</div>
+      <h1 class="rp-headline">また<span class="em">動ける</span>。<br>それが、<br>全てです。</h1>
+    </div>
+    <p class="rp-lead">スポーツの怪我は、早さと精度が勝負。焦りも油断も禁物。あなたのパフォーマンスを知っているから、最適な道筋を示せます。</p>
+  </div>
+
+  <blockquote class="rp-quote">
+    <div class="rp-quote-mark">"</div>
+    <p>驚かせ、喜ばせ、遊ぶ。<br>相手ができないことを、してあげる。</p>
+    <cite>— judo-seifukuin / ACTION POLICY</cite>
+  </blockquote>
+
+  <div class="rp-points-section">
+    <div class="rp-points-label">— Approach</div>
+    <div class="rp-points">
+      <div class="rp-point">
+        <div class="rp-num">01</div>
+        <div class="rp-point-title">怪我の種類・程度を、正確に評価する。</div>
+        <div class="rp-point-desc">競技特性と身体の状態を踏まえた診断で、回復のロードマップを引きます。</div>
+      </div>
+      <div class="rp-point">
+        <div class="rp-num">02</div>
+        <div class="rp-point-title">急性期→回復期→復帰期で、組み立てる。</div>
+        <div class="rp-point-desc">段階に合わせた施術とトレーニング指導を行います。焦りも、停滞も、どちらもリスクです。</div>
+      </div>
+      <div class="rp-point">
+        <div class="rp-num">03</div>
+        <div class="rp-point-title">復帰後のコンディショニングまで、責任を持つ。</div>
+        <div class="rp-point-desc">また同じ怪我をしないために。身体を根本から整え、あなたのパフォーマンスの天井を上げます。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rp-cta-section">
+    <div class="rp-cta-label">— Next step</div>
+    <div class="rp-cta-headline">準備ができたら、<br>LINEから話しかけてください。</div>
+    <button class="rp-cta" onclick="location.href='index-C.html#contact'">LINEで相談する</button>
+    <button class="rp-retry" onclick="restart()">↺ 最初からやり直す</button>
+  </div>
+
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     RESULT D — メンテナンス
+════════════════════════════════════════ -->
+
+<div class="result-screen" id="result-D">
+  <div class="result-page theme-D">
+    <div class="rp-container">
+
+```
+  <div class="rp-top-meta">
+    <div class="rp-issue"><strong>Issue</strong> &nbsp;D &nbsp;— &nbsp;Wellness Maintenance</div>
+    <div class="rp-section">judo-seifukuin</div>
+  </div>
+
+  <div class="rp-headline-block">
+    <div>
+      <div class="rp-eyebrow">あなたへの処方箋</div>
+      <h1 class="rp-headline">不調がない、は<br>普通じゃない。<br><span class="em">もっと</span>ある。</h1>
+    </div>
+    <p class="rp-lead">今の状態に満足しないでください。身体の可能性は、まだ使いきれていない。変えるのは身体じゃない、生き方です。</p>
+  </div>
+
+  <blockquote class="rp-quote">
+    <div class="rp-quote-mark">"</div>
+    <p>治す。遊ぶ。楽しい。<br>それが、健康enjoy。</p>
+    <cite>— judo-seifukuin / CONCEPT</cite>
+  </blockquote>
+
+  <div class="rp-points-section">
+    <div class="rp-points-label">— Approach</div>
+    <div class="rp-points">
+      <div class="rp-point">
+        <div class="rp-num">01</div>
+        <div class="rp-point-title">身体の現状を、丁寧に把握する。</div>
+        <div class="rp-point-desc">自覚のない緊張・歪み・癖を可視化します。違和感に気がつける力が、全ての土台です。</div>
+      </div>
+      <div class="rp-point">
+        <div class="rp-num">02</div>
+        <div class="rp-point-title">月1〜2回で、質の高い日常をつくる。</div>
+        <div class="rp-point-desc">整体×鍼灸×コンディショニングのメンテ設計。感受性が高いから、その人その時に合ったことができる。</div>
+      </div>
+      <div class="rp-point">
+        <div class="rp-num">03</div>
+        <div class="rp-point-title">心が踊る、余裕のある日常へ。</div>
+        <div class="rp-point-desc">それが僕らの考える「健康enjoy」です。あなたの生き方そのものを、豊かにしていきます。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rp-cta-section">
+    <div class="rp-cta-label">— Next step</div>
+    <div class="rp-cta-headline">準備ができたら、<br>LINEから話しかけてください。</div>
+    <button class="rp-cta" onclick="location.href='index-D.html#contact'">LINEで相談する</button>
+    <button class="rp-retry" onclick="restart()">↺ 最初からやり直す</button>
+  </div>
+
+</div>
+```
+
+  </div>
+</div>
+
+<script>
+  let q1 = null;
+
+  function showScreen(id) {
+    const stage = document.querySelector('.stage');
+    const isResult = id.startsWith('result-');
+    stage.style.display = isResult ? 'none' : 'flex';
+
+    document.querySelectorAll('.screen, .result-screen')
+      .forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function selectQ1(val) {
+    q1 = val;
+    if (val === 'sport')       { showScreen('result-C'); return; }
+    if (val === 'maintenance') { showScreen('result-D'); return; }
+    showScreen('screen-q2');
+  }
+
+  function selectQ2(val) {
+    showScreen(val === 'recent' ? 'result-A' : 'result-B');
+  }
+
+  function restart() {
+    q1 = null;
+    showScreen('screen-q1');
+  }
+</script>
+
+</body>
+</html>

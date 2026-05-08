@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>スポーツ復帰へ、段階的リハビリ | 柔道整復院 judo-seifukuin and 鍼灸院</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --blue: #3b82f6;
+      --blue-light: #60a5fa;
+      --bg: #05080f;
+      --bg2: #080f1a;
+      --text: #eef3ff;
+      --text-muted: rgba(238,243,255,0.55);
+    }
+    body { background: var(--bg); color: var(--text); }
+    nav { background: rgba(5,8,15,0.8); border-bottom: 1px solid rgba(96,165,250,0.15); }
+    .nav-cta { background: var(--blue) !important; color: #eef3ff !important; }
+    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 120px 10% 80px; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse 70% 60% at 75% 40%, rgba(59,130,246,0.18) 0%, transparent 60%), linear-gradient(160deg, #080f1a 0%, #05080f 60%, #040810 100%); }
+    .hero-content { position: relative; z-index: 1; max-width: 660px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; color: var(--blue-light); border: 1px solid rgba(96,165,250,0.4); border-radius: 3px; padding: 6px 14px; margin-bottom: 28px; }
+    .hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 900; line-height: 1.25; margin-bottom: 24px; }
+    .hero-title em { font-style: normal; background: linear-gradient(90deg, var(--blue-light), #93c5fd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .btn-primary { background: var(--blue); color: #eef3ff; padding: 16px 32px; border-radius: 4px; font-weight: 700; text-decoration: none; }
+    
+    /* Emotional Goal Section */
+    .future { background: var(--bg); }
+    .future-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 50px; }
+    .future-card { position: relative; border-radius: 12px; overflow: hidden; background: rgba(255,255,255,0.03); border: 1px solid rgba(96,165,250,0.15); padding: 40px; }
+    .future-card h3 { font-size: 1.2rem; margin-bottom: 15px; color: var(--blue-light); }
+    .future-card p { font-size: 0.95rem; line-height: 1.8; color: var(--text-muted); }
+    .future-icon { font-size: 2.5rem; margin-bottom: 20px; display: block; }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">柔道整復院 <span>judo-seifukuin</span> and 鍼灸院</div>
+  <div class="nav-links">
+    <a href="#features">リハビリ体制</a>
+    <a href="#future">復帰後の未来</a>
+    <a href="#contact">アクセス</a>
+    <a href="#contact" class="nav-cta">無料相談・予約</a>
+  </div>
+</nav>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">⚽ &nbsp;SPORTS REHABILITATION PROGRAM</div>
+    <h1 class="hero-title">もう一度、<br><em>全力でプレー</em><br>するために。</h1>
+    <p class="hero-sub" style="margin-bottom:40px;">怪我の痛みを取り除くだけがゴールではありません。<br>競技特性に合わせた段階的リハビリで、<br>怪我をする前よりも「強い身体」での復帰を全力でサポートします。</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">競技復帰プログラムを相談する →</a>
+    </div>
+  </div>
+</section>
+
+<section class="future" id="future">
+  <span class="section-tag">BEYOND RECOVERY</span>
+  <h2 class="section-title">リハビリを乗り越えた先の<br>最高の瞬間を、共に。</h2>
+  <div class="future-grid">
+    <div class="future-card">
+      <span class="future-icon">🏃</span>
+      <h3>恐怖心のない全力疾走</h3>
+      <p>「また痛めるかも」という不安を払拭。独自のコンディショニングにより、思い切り地面を蹴り、走り出せる喜びを取り戻します。</p>
+    </div>
+    <div class="future-card">
+      <span class="future-icon">🏆</span>
+      <h3>パフォーマンスの向上</h3>
+      <p>怪我の原因となった体の癖を修正。リハビリを通じて柔軟性と筋力を強化し、以前より高いレベルでの競技復帰を目指します。</p>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact" style="background:var(--bg2);">
+  <div class="contact-inner" style="display:grid; grid-template-columns: 1fr 1fr; gap:60px;">
+    <div>
+      <h2 class="section-title">アクセス</h2>
+      <p style="margin-bottom:20px;"><strong>電話番号:</strong> <a href="tel:03-1234-5678" style="color:inherit;">03-1234-5678</a></p>
+      <p>〒000-0000 ○○県○○市○○町1-2-3<br>西武池袋線「○○駅」徒歩5分</p>
+    </div>
+    <div class="contact-form" style="background:rgba(255,255,255,0.02); border:1px solid rgba(96,165,250,0.15); border-radius:12px; padding:30px;">
+      <h3 style="margin-bottom:20px;">無料相談・予約</h3>
+      <form action="#" method="post">
+        <div class="form-group"><label for="name">お名前</label><input type="text" id="name" name="name" required></div>
+        <div class="form-group"><label for="tel">電話番号</label><input type="tel" id="tel" name="tel" required></div>
+        <div class="form-group"><label for="sport">競技名</label><input type="text" id="sport" name="sport"></div>
+        <button type="submit" class="btn-primary" style="width:100%; border:none; cursor:pointer;">送信する</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer style="padding:40px; text-align:center; border-top:1px solid rgba(96,165,250,0.1);">
+  <p>© 2025 柔道整復院 judo-seifukuin and 鍼灸院</p>
+  <a href="care-finder.html" style="color:var(--blue-light); font-size:0.8rem; text-decoration:none; margin-top:10px; display:inline-block;">← 診断ページに戻る</a>
+</footer>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>身体を整える、続けるケア | 柔道整復院 judo-seifukuin and 鍼灸院</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700&family=Noto+Sans+JP:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --purple: #8b5cf6;
+      --purple-light: #c084fc;
+      --bg: #0d0a14;
+      --bg2: #110d1a;
+      --text: #f5eeff;
+      --text-muted: rgba(245,238,255,0.5);
+    }
+    body { background: var(--bg); color: var(--text); }
+    nav { background: rgba(13,10,20,0.8); border-bottom: 1px solid rgba(139,92,246,0.12); }
+    .nav-cta { background: transparent !important; color: var(--purple-light) !important; border: 1px solid rgba(192,132,252,0.4) !important; }
+    .hero { min-height: 100vh; display: flex; align-items: center; padding: 120px 10% 80px; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse 80% 70% at 60% 40%, rgba(139,92,246,0.1) 0%, transparent 65%), linear-gradient(170deg, #110d1a 0%, #0d0a14 50%, #0a0f10 100%); }
+    .hero-layout { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; width: 100%; }
+    .hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 300; line-height: 1.6; margin-bottom: 28px; }
+    .hero-title strong { font-weight: 700; background: linear-gradient(135deg, var(--purple-light), #e0b4ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .btn-primary { background: linear-gradient(135deg, #7c3aed, var(--purple)); color: white; padding: 14px 30px; border-radius: 30px; font-weight: 500; text-decoration: none; }
+    
+    /* Local Appeal Section */
+    .local { background: var(--bg2); padding: 80px 10%; }
+    .local-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
+    .local-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(139,92,246,0.15); border-radius: 12px; padding: 30px; }
+    .local-card h3 { font-size: 1.1rem; margin-bottom: 10px; color: var(--purple-light); }
+    .local-card p { font-size: 0.85rem; line-height: 1.8; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo">柔道整復院 <em>judo-seifukuin</em> and 鍼灸院</div>
+  <div class="nav-links">
+    <a href="#local">地域での実績</a>
+    <a href="#menu">メンテナンス</a>
+    <a href="#contact">アクセス</a>
+    <a href="#contact" class="nav-cta">気軽に相談する</a>
+  </div>
+</nav>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-layout">
+    <div class="hero-content">
+      <span class="hero-label">PREVENTION & MAINTENANCE</span>
+      <h1 class="hero-title">健やかな明日を、<br><strong>日常のケア</strong>から。<br>不調を未然に防ぐ。</h1>
+      <p class="hero-sub" style="margin-bottom:40px;">痛みが出る前に、身体の声を聴く時間を。<br>定期的なメンテナンスは、未来の自分への投資です。<br>心地よい施術で、心身のバランスを整えましょう。</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">まずは気軽に相談する →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="local" id="local">
+  <span class="section-tag">COMMUNITY TRUST</span>
+  <h2 class="section-title">地域の皆様に支えられて10年。<br>通いやすさと信頼を大切に。</h2>
+  <div class="local-grid">
+    <div class="local-card">
+      <h3>🚉 西武池袋線「快速」停車駅</h3>
+      <p>仕事帰りやお買い物ついでにも立ち寄りやすい、快速停車駅から徒歩5分の好立地。日常のルーティンに組み込みやすいアクセスの良さが自慢です。</p>
+    </div>
+    <div class="local-card">
+      <h3>㊗️ 開院10周年の地域密着実績</h3>
+      <p>今年で10周年を迎えました。近隣にお住まいのご家族3世代で通っていただいている方も多く、「地域のかかりつけ」としての信頼を積み重ねています。</p>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact" style="background:var(--bg);">
+  <div class="contact-inner" style="display:grid; grid-template-columns: 1fr 1fr; gap:60px;">
+    <div>
+      <h2 class="section-title">アクセス</h2>
+      <p style="margin-bottom:20px;"><strong>電話番号:</strong> <a href="tel:03-1234-5678" style="color:inherit;">03-1234-5678</a></p>
+      <p>〒000-0000 ○○県○○市○○町1-2-3<br>西武池袋線「○○駅」徒歩5分</p>
+    </div>
+    <div class="contact-form" style="background:rgba(255,255,255,0.02); border:1px solid rgba(139,92,246,0.15); border-radius:12px; padding:30px;">
+      <h3 style="margin-bottom:20px;">まずは気軽に相談</h3>
+      <form action="#" method="post">
+        <div class="form-group"><label for="name">お名前</label><input type="text" id="name" name="name" required></div>
+        <div class="form-group"><label for="tel">電話番号</label><input type="tel" id="tel" name="tel" required></div>
+        <div class="form-group"><label for="reason">相談内容</label><select id="reason" name="reason"><option>定期メンテナンス</option><option>姿勢チェック</option><option>軽い不調の相談</option></select></div>
+        <button type="submit" class="btn-primary" style="width:100%; border:none; cursor:pointer;">相談を申し込む</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer style="padding:40px; text-align:center; border-top:1px solid rgba(139,92,246,0.1);">
+  <p>© 2025 柔道整復院 judo-seifukuin and 鍼灸院</p>
+  <a href="care-finder.html" style="color:var(--purple-light); font-size:0.8rem; text-decoration:none; margin-top:10px; display:inline-block;">← 診断ページに戻る</a>
+</footer>
+</body>
+</html>
