@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>あなたの予約 | judo-seifukuin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;700;800&family=Noto+Sans+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    :root {
+      --paper:    #F4F1EA;
+      --paper-2:  #EDE8DD;
+      --ink:      #0F1A12;
+      --ink-soft: #2a3429;
+      --green:    #234A38;
+      --sage:     #A3B8AC;
+      --rule:     rgba(15,26,18,0.18);
+      --rule-soft: rgba(15,26,18,0.08);
+      --muted:    rgba(15,26,18,0.55);
+      --warn:     #8a3a2a;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:'Noto Sans JP', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      min-height:100vh;
+      font-feature-settings:"palt";
+      -webkit-font-smoothing:antialiased;
+    }
+
+    /* top bar */
+    .top-bar {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      padding:18px 28px;
+      display:flex; align-items:center; justify-content:space-between;
+      background: var(--paper);
+      border-bottom:1px solid var(--rule);
+    }
+    .top-logo {
+      font-family:'Cormorant Garamond', serif;
+      font-style:italic; font-size:1.05rem; font-weight:500;
+      color:var(--green); letter-spacing:.02em;
+    }
+    .top-meta {
+      font-size:.62rem; letter-spacing:.18em;
+      color:var(--muted); text-transform:uppercase;
+    }
+
+    .stage {
+      max-width:720px;
+      margin:0 auto;
+      padding:100px 24px 80px;
+    }
+
+    /* page header */
+    .page-meta {
+      display:flex; justify-content:space-between; align-items:flex-end;
+      padding-bottom:18px; margin-bottom:40px;
+      border-bottom:1px solid var(--rule);
+    }
+    .page-meta-left {
+      font-family:'Cormorant Garamond', serif;
+      font-style:italic;
+      font-size:.85rem; color:var(--muted); letter-spacing:.04em;
+    }
+    .page-meta-right {
+      font-family:'Cormorant Garamond', serif;
+      font-size:1.05rem; color:var(--ink);
+    }
+    .page-headline {
+      font-family:'Shippori Mincho B1', serif;
+      font-size:clamp(1.7rem, 5vw, 2.4rem);
+      font-weight:800;
+      line-height:1.4;
+      margin-bottom:14px;
+    }
+    .page-headline .accent { color:var(--green); }
+    .page-lead {
+      font-size:.85rem;
+      color:var(--ink-soft);
+      line-height:1.9;
+      margin-bottom:48px;
+    }
+
+    /* state messages */
+    .state {
+      padding:48px 0;
+      text-align:center;
+      font-size:.9rem;
+      color:var(--muted);
+    }
+    .state .spinner {
+      display:inline-block;
+      width:18px; height:18px;
+      border:1.5px solid var(--rule);
+      border-top-color:var(--green);
+      border-radius:50%;
+      animation:spin .8s linear infinite;
+      margin-right:10px;
+      vertical-align:-4px;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+    .state.error { color:var(--warn); }
+    .state .retry {
+      display:inline-block;
+      margin-top:18px;
+      padding:10px 24px;
+      background:var(--green);
+      color:var(--paper);
+      border:none;
+      font-family:inherit;
+      font-size:.78rem;
+      letter-spacing:.1em;
+      cursor:pointer;
+    }
+
+    /* reservation list */
+    .res-list { list-style:none; }
+    .res-item {
+      padding:28px 0;
+      border-bottom:1px solid var(--rule-soft);
+      display:grid;
+      grid-template-columns:96px 1fr;
+      gap:24px;
+      align-items:start;
+    }
+    .res-item:first-child { border-top:1px solid var(--rule); }
+    .res-date-block {
+      text-align:left;
+    }
+    .res-month {
+      font-family:'Cormorant Garamond', serif;
+      font-style:italic;
+      font-size:.78rem;
+      color:var(--green);
+      letter-spacing:.06em;
+      margin-bottom:4px;
+    }
+    .res-day {
+      font-family:'Shippori Mincho B1', serif;
+      font-size:2.2rem;
+      font-weight:800;
+      line-height:1;
+      color:var(--ink);
+    }
+    .res-weekday {
+      font-size:.7rem;
+      color:var(--muted);
+      letter-spacing:.08em;
+      margin-top:6px;
+    }
+    .res-body { padding-top:4px; }
+    .res-time {
+      font-family:'Cormorant Garamond', serif;
+      font-size:1.25rem;
+      color:var(--ink);
+      letter-spacing:.04em;
+      margin-bottom:8px;
+    }
+    .res-menu {
+      font-family:'Shippori Mincho B1', serif;
+      font-size:1rem;
+      font-weight:700;
+      color:var(--ink);
+      margin-bottom:6px;
+      line-height:1.6;
+    }
+    .res-note {
+      font-size:.74rem;
+      color:var(--muted);
+      line-height:1.8;
+    }
+    .res-status {
+      display:inline-block;
+      margin-top:10px;
+      padding:3px 10px;
+      font-size:.62rem;
+      letter-spacing:.12em;
+      border:1px solid var(--rule);
+      color:var(--ink-soft);
+    }
+    .res-status.confirmed { color:var(--green); border-color:var(--green); }
+    .res-status.cancelled { color:var(--warn); border-color:var(--warn); text-decoration:line-through; }
+
+    .empty {
+      padding:80px 0;
+      text-align:center;
+    }
+    .empty-mark {
+      font-family:'Cormorant Garamond', serif;
+      font-style:italic;
+      font-size:2rem;
+      color:var(--green);
+      margin-bottom:14px;
+    }
+    .empty-text {
+      font-family:'Shippori Mincho B1', serif;
+      font-size:1.1rem;
+      color:var(--ink);
+      margin-bottom:8px;
+    }
+    .empty-sub {
+      font-size:.78rem;
+      color:var(--muted);
+      line-height:1.8;
+    }
+
+    .footer-note {
+      margin-top:48px;
+      padding-top:24px;
+      border-top:1px solid var(--rule-soft);
+      font-size:.7rem;
+      color:var(--muted);
+      line-height:1.9;
+      text-align:center;
+    }
+
+    @media (max-width:520px) {
+      .top-bar { padding:14px 18px; }
+      .stage { padding:88px 18px 60px; }
+      .res-item { grid-template-columns:72px 1fr; gap:16px; }
+      .res-day { font-size:1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-logo">judo-seifukuin</div>
+  <div class="top-meta">RESERVATIONS</div>
+</div>
+
+<div class="stage">
+
+  <div class="page-meta">
+    <div class="page-meta-left">— Your appointments</div>
+    <div class="page-meta-right" id="user-name">—</div>
+  </div>
+
+  <h1 class="page-headline">あなたの<span class="accent">予約</span>。</h1>
+  <p class="page-lead" id="page-lead">登録されている予約の一覧です。</p>
+
+  <div id="content">
+    <div class="state" id="state-loading">
+      <span class="spinner"></span>読み込んでいます…
+    </div>
+  </div>
+
+  <div class="footer-note">
+    変更・キャンセルはLINEトークから直接ご連絡ください。
+  </div>
+</div>
+
+<script>
+  // ───────────────────────────────────────────────
+  //  CONFIG — デプロイ前に置き換えてください
+  // ───────────────────────────────────────────────
+  const LIFF_ID = "PASTE_YOUR_LIFF_ID_HERE";
+  const API_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_WEBHOOK_URL_HERE";
+  // ───────────────────────────────────────────────
+
+  const $content = document.getElementById('content');
+  const $userName = document.getElementById('user-name');
+
+  function renderError(msg, retry) {
+    $content.innerHTML = `
+      <div class="state error">
+        ${msg}
+        ${retry ? '<br><button class="retry" id="retry-btn">再試行</button>' : ''}
+      </div>`;
+    if (retry) document.getElementById('retry-btn').onclick = retry;
+  }
+
+  function renderEmpty() {
+    $content.innerHTML = `
+      <div class="empty">
+        <div class="empty-mark">—</div>
+        <div class="empty-text">予約はありません</div>
+        <div class="empty-sub">LINEからお気軽にご相談ください。</div>
+      </div>`;
+  }
+
+  const WEEKDAYS = ['日','月','火','水','木','金','土'];
+
+  function formatItem(r) {
+    const dt = new Date(r.datetime);
+    const valid = !isNaN(dt.getTime());
+    const month = valid ? String(dt.getMonth()+1).padStart(2,'0') : '--';
+    const day   = valid ? String(dt.getDate()).padStart(2,'0') : '--';
+    const wd    = valid ? WEEKDAYS[dt.getDay()] : '';
+    const time  = valid
+      ? `${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`
+      : (r.time || '');
+
+    const statusClass = r.status === 'キャンセル' ? 'cancelled'
+                      : r.status === '確定' ? 'confirmed' : '';
+
+    return `
+      <li class="res-item">
+        <div class="res-date-block">
+          <div class="res-month">${valid ? dt.getFullYear() : ''}</div>
+          <div class="res-day">${month}.${day}</div>
+          <div class="res-weekday">${wd ? wd + ' / ' : ''}${time}</div>
+        </div>
+        <div class="res-body">
+          <div class="res-time">${time}</div>
+          <div class="res-menu">${escapeHtml(r.menu || 'ご予約')}</div>
+          ${r.note ? `<div class="res-note">${escapeHtml(r.note)}</div>` : ''}
+          ${r.status ? `<span class="res-status ${statusClass}">${escapeHtml(r.status)}</span>` : ''}
+        </div>
+      </li>`;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+
+  async function fetchReservations(idToken, userId) {
+    const url = new URL(API_ENDPOINT);
+    url.searchParams.set('userId', userId);
+    if (idToken) url.searchParams.set('idToken', idToken);
+
+    const res = await fetch(url.toString(), { method:'GET' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    return Array.isArray(data) ? data : (data.reservations || []);
+  }
+
+  async function main() {
+    try {
+      if (LIFF_ID === "PASTE_YOUR_LIFF_ID_HERE") {
+        renderError('LIFF IDが未設定です。reservations.html の LIFF_ID を設定してください。');
+        return;
+      }
+
+      await liff.init({ liffId: LIFF_ID });
+
+      if (!liff.isLoggedIn()) {
+        liff.login();
+        return;
+      }
+
+      const profile = await liff.getProfile();
+      $userName.textContent = profile.displayName;
+
+      const idToken = liff.getIDToken();
+      const list = await fetchReservations(idToken, profile.userId);
+
+      // sort by datetime ascending, future first
+      list.sort((a,b) => new Date(a.datetime) - new Date(b.datetime));
+
+      if (!list.length) { renderEmpty(); return; }
+
+      $content.innerHTML = `<ul class="res-list">${list.map(formatItem).join('')}</ul>`;
+    } catch (e) {
+      console.error(e);
+      renderError(`読み込みに失敗しました（${escapeHtml(e.message)}）`, main);
+    }
+  }
+
+  main();
+</script>
+
+</body>
+</html>
